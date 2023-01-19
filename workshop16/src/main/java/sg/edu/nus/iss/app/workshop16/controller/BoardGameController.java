@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.app.workshop16.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,7 +46,8 @@ public class BoardGameController {
     }
 
     @GetMapping(path = "{msId}")
-    public ResponseEntity<String> getBoardGame(@PathVariable String msId) {
+    public ResponseEntity<String> getBoardGame(@PathVariable String msId)
+            throws IOException {
         Mastermind ms = bgSvc.findById(msId);
         if (ms == null) {
             return ResponseEntity
@@ -60,7 +63,7 @@ public class BoardGameController {
 
     @PutMapping(path = "{msId}")
     public ResponseEntity<String> updateBoardGame(@RequestBody Mastermind ms,
-            @PathVariable String msId, @RequestParam boolean isUpsert) {
+            @PathVariable String msId, @RequestParam boolean isUpsert) throws IOException {
         Mastermind result = null;
         System.out.println("ctrl > " + isUpsert);
         ms.setUpSert(isUpsert);

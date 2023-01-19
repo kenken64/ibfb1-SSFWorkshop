@@ -1,10 +1,14 @@
 package sg.edu.nus.iss.app.workshop16.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Random;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 public class Mastermind implements Serializable {
     private String name;
@@ -95,6 +99,18 @@ public class Mastermind implements Serializable {
                 .add("id", this.getId())
                 .add("update_count", this.getUpdateCount())
                 .build();
+    }
+
+    public static Mastermind create(String json) throws IOException {
+        Mastermind m = new Mastermind();
+        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
+            JsonReader r = Json.createReader(is);
+            JsonObject o = r.readObject();
+            m.setName(o.getString("name"));
+            JsonObject pieces = o.getJsonObject("pieces");
+            m.setPieces(Pieces.createJson(pieces));
+        }
+        return m;
     }
 
     @Override

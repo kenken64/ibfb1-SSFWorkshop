@@ -72,43 +72,9 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         // set the map key/value serialization type to String
         redisTemplate.setHashKeySerializer(redisTemplate.getKeySerializer());
-        redisTemplate.setValueSerializer(new JsonRedisSerializer());
-        redisTemplate.setHashValueSerializer(new JsonRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
 
         return redisTemplate;
-    }
-
-    static class JsonRedisSerializer implements RedisSerializer<Object> {
-
-        private final ObjectMapper om;
-
-        public JsonRedisSerializer() {
-            this.om = new ObjectMapper().activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
-                    ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
-
-        }
-
-        @Override
-        public byte[] serialize(Object t) throws SerializationException {
-            try {
-                return om.writeValueAsBytes(t);
-            } catch (JsonProcessingException e) {
-                throw new SerializationException(e.getMessage(), e);
-            }
-        }
-
-        @Override
-        public Object deserialize(byte[] bytes) throws SerializationException {
-
-            if (bytes == null) {
-                return null;
-            }
-
-            try {
-                return om.readValue(bytes, Object.class);
-            } catch (Exception e) {
-                throw new SerializationException(e.getMessage(), e);
-            }
-        }
     }
 }
