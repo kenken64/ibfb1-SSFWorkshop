@@ -18,6 +18,10 @@
         </br>
         <p data-th-text="*{result}"></p>
         </br>
+        <p data-th-if="*{percentage >= 75}">C</p>
+        </br>
+        <p data-th-if="*{percentage < 75}">NC</p>
+        </br>
     </div>
 </body>
 </html>

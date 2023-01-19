@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,19 +15,26 @@ import sg.edu.nus.iss.app.lovecalc.model.LoverResult;
 import sg.edu.nus.iss.app.lovecalc.service.LoveCalcService;
 
 @Controller
-@RequestMapping(path="/lovecalc")
+@RequestMapping(path = "/lovecalc")
 public class LoveCalcController {
-    
+
     @Autowired
     private LoveCalcService lvSvc;
 
     @GetMapping
-    public String calcCompatibility(@RequestParam(required=true)
-         String fname, @RequestParam(required=true) String sname, 
-         Model model)
-    throws IOException{
+    public String calcCompatibility(@RequestParam(required = true) String fname,
+            @RequestParam(required = true) String sname,
+            Model model)
+            throws IOException {
         Optional<LoverResult> r = this.lvSvc.calcCompatibility(fname, sname);
-        model.addAttribute("result", r);
+        model.addAttribute("result", r.get());
         return "result";
+    }
+
+    @GetMapping(path = "/list")
+    public String getAllBoardGame(Model model) throws IOException {
+        LoverResult[] mArr = lvSvc.getAllMatchMaking();
+        model.addAttribute("arr", mArr);
+        return "list";
     }
 }

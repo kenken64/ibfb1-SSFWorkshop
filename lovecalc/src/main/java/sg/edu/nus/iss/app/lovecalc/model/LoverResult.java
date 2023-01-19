@@ -3,6 +3,7 @@ package sg.edu.nus.iss.app.lovecalc.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.Random;
 
 import jakarta.json.Json;
@@ -23,6 +24,7 @@ public class LoverResult {
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -30,24 +32,31 @@ public class LoverResult {
     public String getFname() {
         return fname;
     }
+
     public void setFname(String fname) {
         this.fname = fname;
     }
+
     public String getSname() {
         return sname;
     }
+
     public void setSname(String sname) {
         this.sname = sname;
     }
+
     public Integer getPercentage() {
         return percentage;
     }
+
     public void setPercentage(Integer percentage) {
         this.percentage = percentage;
     }
+
     public String getResult() {
         return result;
     }
+
     public void setResult(String result) {
         this.result = result;
     }
@@ -63,13 +72,16 @@ public class LoverResult {
 
     public static LoverResult create(String json) throws IOException {
         LoverResult w = new LoverResult();
-        try(InputStream is = new ByteArrayInputStream(json.getBytes())){
+        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
             JsonReader r = Json.createReader(is);
             JsonObject o = r.readObject();
-            w.setFname(o.getString("fname"));
-            w.setSname(o.getString("sname"));
-            w.setPercentage(o.getJsonNumber("percentage").intValue());
-            w.setResult(o.getString("result")); 
+            // remove encoding chars from API
+            String person1Name = URLDecoder.decode(o.getString("fname"), "UTF-8");
+            String person2Name = URLDecoder.decode(o.getString("sname"), "UTF-8");
+            w.setFname(person1Name);
+            w.setSname(person2Name);
+            w.setPercentage(Integer.parseInt(o.getString("percentage")));
+            w.setResult(o.getString("result"));
         }
         return w;
     }
