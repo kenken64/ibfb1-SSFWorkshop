@@ -22,7 +22,7 @@ public class Mastermind implements Serializable {
         this.id = generateId(8);
     }
 
-    private synchronized String generateId(int numChars) {
+    public synchronized String generateId(int numChars) {
         Random r = new Random();
         StringBuilder strBuilder = new StringBuilder();
         while (strBuilder.length() < numChars) {
@@ -103,13 +103,14 @@ public class Mastermind implements Serializable {
 
     public static Mastermind create(String json) throws IOException {
         Mastermind m = new Mastermind();
-        try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
-            JsonReader r = Json.createReader(is);
-            JsonObject o = r.readObject();
-            m.setName(o.getString("name"));
-            JsonObject pieces = o.getJsonObject("pieces");
-            m.setPieces(Pieces.createJson(pieces));
-        }
+        if(json != null)
+            try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
+                JsonReader r = Json.createReader(is);
+                JsonObject o = r.readObject();
+                m.setName(o.getString("name"));
+                JsonObject pieces = o.getJsonObject("pieces");
+                m.setPieces(Pieces.createJson(pieces));
+            }
         return m;
     }
 

@@ -77,8 +77,8 @@ public class BoardGameController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body("400");
         }
-        if (isUpsert)
-            ms.setId(msId);
+        //if (isUpsert)
+        ms.setId(msId);
         int updatedCount = bgSvc.update(ms);
         ms.setUpdateCount(updatedCount);
         return ResponseEntity

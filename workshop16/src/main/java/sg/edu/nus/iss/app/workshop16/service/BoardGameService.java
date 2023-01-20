@@ -30,15 +30,24 @@ public class BoardGameService {
 
     public int update(final Mastermind mds) {
         System.out.println("upsert ? " + mds.isUpSert());
-        if (mds.isUpSert()) {
-            System.out.println("upsert is true");
-            redisTemplate.opsForValue().set(mds.getId(), mds.toJSON().toString());
-        } else {
-            System.out.println("upsert is false");
-            redisTemplate.opsForValue().setIfAbsent(mds.getId(), mds.toJSON().toString());
-        }
+        System.out.println(mds.getId());
         String result = (String) redisTemplate.opsForValue()
                 .get(mds.getId());
+        if (mds.isUpSert()) {
+            System.out.println("upsert is true");
+            System.out.println(result);
+            if(result != null)
+                redisTemplate.opsForValue().set(mds.getId(), mds.toJSON().toString());
+            else
+                mds.setId(mds.generateId(8));
+                redisTemplate.opsForValue().setIfAbsent(mds.getId(), mds.toJSON().toString());
+        } else {
+            System.out.println("upsert is false");
+            if(result != null)
+                redisTemplate.opsForValue().set(mds.getId(), mds.toJSON().toString());
+        }
+        result = (String) redisTemplate.opsForValue()
+            .get(mds.getId());
 
         if (null != result)
             return 1;
