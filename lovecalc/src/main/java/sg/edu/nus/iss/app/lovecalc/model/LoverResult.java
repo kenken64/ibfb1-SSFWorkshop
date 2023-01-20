@@ -21,6 +21,12 @@ public class LoverResult {
         this.id = generateId(8);
     }
 
+    public LoverResult(String fname, String sname) {
+        this.id = generateId(8);
+        this.fname =fname;
+        this.sname = sname;
+    }
+
     public String getId() {
         return id;
     }
@@ -78,6 +84,7 @@ public class LoverResult {
             // remove encoding chars from API
             String person1Name = URLDecoder.decode(o.getString("fname"), "UTF-8");
             String person2Name = URLDecoder.decode(o.getString("sname"), "UTF-8");
+            
             w.setFname(person1Name);
             w.setSname(person2Name);
             w.setPercentage(Integer.parseInt(o.getString("percentage")));

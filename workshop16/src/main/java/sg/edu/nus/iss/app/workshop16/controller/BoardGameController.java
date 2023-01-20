@@ -63,7 +63,7 @@ public class BoardGameController {
 
     @PutMapping(path = "{msId}")
     public ResponseEntity<String> updateBoardGame(@RequestBody Mastermind ms,
-            @PathVariable String msId, @RequestParam boolean isUpsert) throws IOException {
+            @PathVariable String msId, @RequestParam(required=false) boolean isUpsert) throws IOException {
         Mastermind result = null;
         System.out.println("ctrl > " + isUpsert);
         ms.setUpSert(isUpsert);

@@ -25,12 +25,12 @@ public class LoveCalcService {
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
 
-    public Optional<LoverResult> calcCompatibility(String person1Name, String personName2)
+    public Optional<LoverResult> calcCompatibility(LoverResult rr)
             throws IOException {
         String finalLoveCalculatorUrl = UriComponentsBuilder
                 .fromUriString(LOVE_CALC_API_URL)
-                .queryParam("fname", person1Name)
-                .queryParam("sname", personName2)
+                .queryParam("fname", rr.getFname())
+                .queryParam("sname", rr.getSname())
                 .toUriString();
         System.out.println(finalLoveCalculatorUrl);
         RestTemplate template = new RestTemplate();

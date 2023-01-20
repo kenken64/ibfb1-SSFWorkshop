@@ -26,13 +26,14 @@ public class LoveCalcController {
             @RequestParam(required = true) String sname,
             Model model)
             throws IOException {
-        Optional<LoverResult> r = this.lvSvc.calcCompatibility(fname, sname);
+        LoverResult rr = new LoverResult(fname, sname);
+        Optional<LoverResult> r = this.lvSvc.calcCompatibility(rr);
         model.addAttribute("result", r.get());
         return "result";
     }
 
     @GetMapping(path = "/list")
-    public String getAllBoardGame(Model model) throws IOException {
+    public String getAllLoveCompat(Model model) throws IOException {
         LoverResult[] mArr = lvSvc.getAllMatchMaking();
         model.addAttribute("arr", mArr);
         return "list";
